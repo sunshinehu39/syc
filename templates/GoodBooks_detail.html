@@ -1,0 +1,133 @@
+{#全网主页/首页#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load myfilter %}
+
+{% block left_content %}
+
+
+    {#最新文章#}
+    <div class="topnews">
+
+      <div class="blogs">
+        <ul>
+
+        <img style="width: 100px; margin: 5px 20px 5px 0px;float: left " src="{{ MEDIA_URL }}{{ goodbook.bookcover }}" alt="">
+
+          <h2 style="font-weight: bold; font-size: 20px;display: inline"><a href="{{ goodbook.url }}">《{{ goodbook.name }}》</a></h2>
+          <h3 style="display: inline">&nbsp;&nbsp;&nbsp;{{ goodbook.author }}&nbsp;</h3>
+          <h3 style="display: inline; color: red">
+
+            {% if goodbook.is_recommend %}&nbsp;
+                 <img  style="float:right; height:55px;margin-right: 15px " src="{% static 'images/推荐.png' %}" alt="">
+            {% endif %}
+
+            {% if goodbook.is_top %}
+                       <img  style="margin-top: 10px; float: left; height:45px;margin-right: 5px " src="{% static 'images/置顶.png' %}" alt="">
+            {% endif %}
+
+            </h3>
+
+          <p>适合 ：<span style="color: green">{{ goodbook.application }}</span> </p>
+          <p style="margin: 5px">{{ goodbook.bookreview }}</p>
+
+{#        文章信息#}
+          <p class="autor" style="margin: 0px;padding: 5px;line-height: 25px">
+
+{#          作者#}
+          {% ifequal goodbook.publisher.username '四叶草' %}
+              <a href="{% url 'index' %}?category=四叶草">
+          {% else %}
+              <a href="{% url 'Member_detail' %}?id={{ goodbook.publisher.id | M_id }}&category=会员">
+          {% endifequal %}
+            <img style="border-radius:50%;width: 15px; height: 15px;float: left;padding: 5px 5px 5px 0px " src="{{ MEDIA_URL }}{{ goodbook.publisher.avatar }}" alt="">
+            <span class="f_l" style="margin: 0px 0px;padding-left: 0px;line-height: 25px">{{ goodbook.publisher.username }}&nbsp&nbsp&nbsp&nbsp</span>
+          </a>
+
+{#          发布日期#}
+              <span class="dtime f_l">推荐于{{ goodbook.date_publish | date:'Y-m-d' }}</span>
+
+{#          标签#}
+          <span class="lm f_l">
+              {% for tag in goodbook.tag.all %}
+                    <a href="{% url 'tag' %}?tid={{ tag.id }}&category={{ category }}">{{ tag.name }}</a>&nbsp;
+              {% endfor %}
+          </span>
+
+{#          标记已读，收藏#}
+{#              <span class="viewnum f_r">{% ifequal goodbook.has_read True %}已读{% else %}点我标记为已读！{% endifequal %}&nbsp;&nbsp;收藏（{{ goodbook.fav_num }}）</span>#}
+              <span class="viewnum f_r">浏览（{{ goodbook.click_num }}）</span>
+{#          评论数#}
+              <span class="pingl f_r">评论（{{ goodbook.comment_set.all.count }}）</span>
+          </p>
+        </ul>
+      </div>
+
+    </div>
+
+{# 评论区 #}
+<div style="margin: 30px 0px 60px 0px">
+        {# 新增评论 #}
+        {% if not request.user.is_authenticated %}
+            <div  style="text-align: center;"><button class="login"><a style="cursor: pointer; color: crimson;" href="{% url 'login' %}?next={{ request.get_full_path }}"> 评论 </a></button></div>
+        {% else %}
+            {#    评论表单#}
+            <div id="comment_form" hidden >
+                <form action="{% url 'comment_post' %}?next={{ request.get_full_path }}&category={{ category | urlencode }}" method="post">
+                    {% csrf_token %}
+                    <div id="div1" style="height:180px;max-height:500px;" ></div>
+                    <textarea id="content" hidden name="content" style="height:60px;width:650px;margin: 10px;resize: none;" >''</textarea>
+                    <input type="hidden" name="id" value="{{ id }}"/>
+                    <button id="submit" class="login" style="cursor: pointer; color: crimson;float: right">发布 </button>
+                </form>
+                <button id="cancelbnt" hidden  class="login" style="cursor: pointer; color: crimson;float: right"> 取消 </button>
+            </div>
+            <div style="text-align: center;"><button id="commentbnt"  class="login" style="cursor: pointer; color: crimson;"> 评论 </button></div>
+        {% endif %}
+
+        {# 显示评论 #}
+        <div>
+        {% for comment in comment_list %}
+            <div style="float: left;height:auto;margin-bottom: 10px;">
+                <div style="float: left; text-align:center;height:33px;width:33px; margin: 10px; padding-top: 3px">
+
+                {% ifequal comment.user.username '四叶草' %}
+                    <a href="{% url 'index' %}?category=四叶草">
+                {% else %}
+                    <a href="{% url 'Member_detail' %}?id={{ comment.user.id }}&category=会员">
+                {% endifequal %}
+                      <img style="border-radius:50%;" alt='' src='{{ MEDIA_URL }}{{comment.user.avatar }}'  height='33px' width='33px' />
+                    </a>
+
+                </div>
+                  {# 留言内容 #}
+                  <div class="body" style="float: left;margin: 10px; width:590px">
+
+                      <p style="line-height: 20px;color:darkslategray;padding: 0px 0px 5px 5px">
+
+
+                        {% ifequal comment.user.username '四叶草' %}
+                            <a href="{% url 'index' %}?category=四叶草">
+                        {% else %}
+                            <a href="{% url 'Member_detail' %}?id={{ comment.user.id | M_id }}&category=会员">
+                        {% endifequal %}
+                                <span style="color:{{ comment.user.gender | sex }}; font-weight: bold  ">
+                                    {{ comment.user.username }}
+                                </span>
+                            </a>
+
+                          &nbsp&nbsp发表于 {{ comment.date_publish | date:'Y-m-d H:i' }}
+                      </p>
+
+                      <div class="{{ comment.user.gender | Chat_bubble }}">
+                            {{ comment.content | safe }}
+                      </div>
+                  </div>
+             </div>
+        {% endfor %}
+        </div>
+</div>
+
+{% include 'category_pagination.html' %}
+
+{% endblock %}

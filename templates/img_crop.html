@@ -1,0 +1,80 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="zh-CN" id="index">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no, email=no" />
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+<title>图片裁剪</title>
+
+<link href="{% static 'css/style.css' %}?ver=2" rel="stylesheet">
+<style>
+body {
+	margin: 0;
+	text-align: center;
+}
+#clipArea {
+	margin: auto;
+	height: 400px;
+	width: 400px;
+}
+
+#clipBtn {
+	margin: 20px;
+}
+#view {
+	margin: 0 auto;
+	width: 200px;
+	height: 200px;
+}
+</style>
+</head>
+<body ontouchstart="">
+<form id="clipform" enctype="multipart/form-data"  method="post" action="{% url 'img_post' %}" >
+    <div id="clipArea"></div>
+
+    <div style="margin: 20px auto;width: 400px;">
+    <label style="float:left;margin-left: 70px" class="button btn-green btn-w100" for="file">上传头像</label>
+    <input hidden type="file" id="file" name="photo" >
+    
+    <button onlickc="return clipImg()"  type="submit" style="float:right;padding: 0px;margin: 0px 70px 0px 0px;" class="button btn-green btn-w100" id="clipBtn">保存</button>
+    </div>
+
+
+    <div hidden id="view">
+        <textarea  name="photo" rows="10" cols="100"></textarea>
+    </div>
+
+    {% csrf_token %}
+</form>
+
+<script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="static/js/img_js/iscroll-zoom.js"></script> <!--实现图片的移动-->
+<script src="static/js/img_js/hammer.js"></script>
+<script src="static/js/img_js/lrz.all.bundle.js"></script>
+<script src="static/js/img_js/jquery.photoClip.js"></script> <!--实现图片的剪裁-->
+<script>
+var clipArea = new bjj.PhotoClip("#clipArea", {
+	size: [260, 260],
+	outputSize: [640, 640],
+	file: "#file",
+	view: "#view",
+	ok: "#clipBtn",
+	loadStart: function() {
+		console.log("照片读取中");
+	},
+	loadComplete: function() {
+		console.log("照片读取完成");
+	},
+	clipFinish: function(dataURL) {
+		console.log(dataURL);
+	}
+});
+</script>
+
+</body>
+</html>

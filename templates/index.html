@@ -1,0 +1,124 @@
+{#全网主页/首页#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load myfilter %}
+
+{% block custom_css %}
+
+<link href="{% static 'js/video.js/css/video-js.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/video.js/js/video.min.js' %}"></script>
+
+{% endblock %}
+
+{% block custom_js %}
+<script>
+    videojs.options.flash.swf = "video-js.swf";
+</script>
+
+{% endblock %}
+
+{% block left_content %}
+
+<!-- {% ifequal category '四叶草' %}
+    <img width="670px" src="{% static 'images/四叶草.jpg' %}" alt="">
+    
+{% endifequal %}
+
+{% ifequal request.get_full_path '/' %}
+
+<video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="none" width="660" height="372"
+      poster="static/video/四叶草第一季回顾视频封面.png"
+      data-setup="{}">
+    <source src="upload/四叶草宣传片.mp4" type='video/mp4' />
+</video>
+{% endifequal %}  -->
+    
+    {#最新文章#}
+    <div class="topnews">
+    
+      {% for article in article_list %}
+
+      <div class="blogs">
+        <ul>
+{#        文章标题#}
+          <h3><a href="{% url 'article' %}?id={{ article.id }}&category={{ article.category }}">
+
+            {% if article.is_top %}
+                       <img  style="float: left; height:50px;margin-right: 5px " src="{% static 'images/置顶.png' %}" alt="">
+            {% endif %}
+
+              {{ article.title }}
+
+            {% if article.is_recommend %}&nbsp;
+                 <img  style="float:right; height:50px;margin-right: 30px " src="{% static 'images/推荐.png' %}" alt="">
+            {% endif %}
+
+
+          </a></h3>
+
+{#        文章简介#}
+          <p>{{ article.desc | truncate_filter }}</p>
+
+{#        文章信息#}
+          <p class="autor" style="margin: 0px;padding: 5px;line-height: 25px">
+
+{#          作者#}
+
+          {% ifequal article.author.username '四叶草' %}
+
+              <a href="{% url 'syc' %}?category=四叶草">
+
+          {% else %}
+
+              <a href="{% url 'Member_detail' %}?id={{ article.author.id | M_id }}&category=会员">
+
+          {% endifequal %}
+
+                    <img style="border-radius:50%;width: 15px; height: 15px;float: left;padding: 5px 5px 5px 0px " src="{{ MEDIA_URL }}{{ article.author.avatar }}" alt="">
+                    <span class="f_l" style="margin: 0px 0px;padding-left: 0px;line-height: 25px">{{ article.author.username }}&nbsp&nbsp&nbsp&nbsp</span>
+              </a>
+
+{#          发布日期#}
+              <span class="dtime f_l">{{ article.date_publish | date:'Y-m-d' }}&nbsp&nbsp</span>
+
+{#          标签#}
+          <span class="lm f_l">
+              {% for tag in article.tag.all %}
+                    <a href="{% url 'tag' %}?tid={{ tag.id }}&category={{ category }}">{{ tag.name }}</a>&nbsp;
+              {% endfor %}
+          </span>
+
+
+
+{#          浏览量#}
+              <span class="viewnum f_r">浏览（<a href="{% url 'article' %}?id={{ article.id }}">{{ article.click_num }}</a>）</span>
+
+
+
+
+{#          评论数#}
+              <span class="pingl f_r" style="margin-left: 20px">评论（<a href="{% url 'article' %}?id={{ article.id }}">{{ article.comment_set.all.count }}</a>）</span>
+
+              {% if not request.user.is_authenticated %}
+                <a class="btn f_r" href="{% url 'login' %}?next={{ request.get_full_path }}">
+                    &nbsp;&nbsp;&nbsp;收藏
+                </a>
+              {% else %}
+
+                <a class="btn f_r" href="{% url 'fav' %}?next={{ request.get_full_path }}&category=文章&id={{ article.id }}">
+                    {% if article.id in faved_list %}&nbsp;&nbsp;已收藏{% else %}&nbsp;&nbsp;&nbsp;收藏{% endif %}
+                </a>
+              {% endif %}
+          </p>
+        </ul>
+      </div>
+      {% endfor %}
+
+        {% include 'category_pagination.html' %}
+    </div>
+
+    <ul class="pagination pagination-sm">
+        {{ page_obj.page_str|safe }}
+    </ul>
+
+{% endblock %}

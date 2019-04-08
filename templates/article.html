@@ -1,0 +1,135 @@
+{#文章详情页#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load myfilter %}
+
+{% block left_content %}
+
+
+
+{#    发布日期#}
+    <div class="postdate">
+      <div class="month" style="margin-top: 2px">{{ article.date_publish | month_to_upper }}</div>
+      <div class="date">{{ article.date_publish | date:'d' }}</div>
+    </div>
+
+{#    文章标题区#}
+    <div class="title">
+
+{#        文章标题#}
+        <h3 style="font-weight: bold; color:darkslategray"><a  rel="bookmark" title="{{ article.title }}">{{ article.title }}</a></h3>
+
+{#        文章信息#}
+        <div class="postmeta">
+
+{#          作者#}
+
+          {% ifequal article.author.username '四叶草' %}
+
+              <a href="{% url 'index' %}?category=四叶草">
+
+          {% else %}
+
+              <a href="{% url 'Member_detail' %}?id={{ article.author.id | M_id }}&category=会员">
+
+          {% endifequal %}
+
+                    <img style="border-radius:50%;width: 15px; height: 15px;float: left;padding: 5px 5px 5px 0px " src="{{ MEDIA_URL }}{{ article.author.avatar }}" alt="">
+                    <span class="f_l" style="margin: 0px 0px;padding-left: 0px;line-height: 25px">{{ article.author.username }}&nbsp&nbsp&nbsp&nbsp</span>
+          </a>
+
+{#            发布时间#}
+          <span class="postmeta_time">{{ article.date_publish | date:'Y-m-d' }}</span>
+
+{#            阅读数#}
+          <span class=""> &nbsp&nbsp&nbsp阅读 {{ article.click_num }}&nbsp&nbsp&nbsp</span>
+
+{#            类型#}
+           <span class="postmeta_category"><a href="{% url 'index' %}?category={{ article.category }}" rel="category">&nbsp{{ article.category }}</a></span>
+
+{#            是否推荐#}
+          <span class="" style="font-family:微软雅黑;color:red;font-size:13px;font-weight:bold; "> &nbsp&nbsp{{ article.is_recommend | recommend }}</span>
+
+            {#    一键分享#}
+<div style="display:inline;float:right;margin-top: -2px;margin-right: 30px" class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+        </div>
+    </div>
+
+{#      文章内容#}
+        <div class="entry">
+          {{ article.content | safe }}
+        </div>
+
+        <br>
+
+{#    标签#}
+        <span class="tags">
+            {% for tag in article.tag.all %}
+            <a href="{% url 'tag' %}?tid={{ tag.id }}&category={{ category }}" rel="tag">{{ tag.name }}</a>
+            {% endfor %}
+        </span>
+
+        <span class="pingl f_r" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp评论（<a href="{% url 'article' %}?id={{ article.id }}">{{ article.comment_set.all.count }}</a>）</span>
+
+              {% if not request.user.is_authenticated %}
+                <a class="btn f_r" href="{% url 'login' %}?next={{ request.get_full_path }}">
+                    &nbsp;&nbsp;&nbsp;收藏&nbsp;&nbsp;&nbsp;
+                </a>
+              {% else %}
+
+                <a class="btn f_r" href="{% url 'fav' %}?next={{ request.get_full_path }}&category=文章&id={{ article.id }}">
+                    {% if article.id in faved_list %}&nbsp;&nbsp;已收藏&nbsp;&nbsp;&nbsp;{% else %}&nbsp;&nbsp;&nbsp;收藏&nbsp;&nbsp;&nbsp;{% endif %}
+                </a>
+              {% endif %}
+
+
+{# 新增评论 #}
+<div style="margin: 30px 0px 60px 0px">
+    {% if not request.user.is_authenticated %}
+        <div  style="text-align: center;"><button class="login"><a style="cursor: pointer; color: crimson;" href="{% url 'login' %}?next={{ request.get_full_path }}"> 评论 </a></button></div>
+    {% else %}
+        {#    评论表单#}
+        <div id="comment_form" hidden >
+            <form action="{% url 'comment_post' %}?next={{ request.get_full_path }}" method="post">
+                {% csrf_token %}
+                <div id="div1" style="height:180px;max-height:500px;" ></div>
+                <textarea required id="content" hidden name="content" style="height:60px;width:650px;margin: 10px;resize: none;" ></textarea>
+                <input type="hidden" name="id" value="{{ id }}"/>
+                <button id="submit" class="login" style="cursor: pointer; color: crimson;float: right">发布 </button>
+            </form>
+            <button id="cancelbnt" hidden  class="login" style="cursor: pointer; color: crimson;float: right"> 取消 </button>
+        </div>
+        <div style="text-align: center;"><button id="commentbnt"  class="login" style="cursor: pointer; color: crimson;"> 评论 </button></div>
+    {% endif %}
+
+{# 显示评论 #}
+<div>
+{% for comment in comment_list %}
+
+    <div style="float: left;height:auto;margin-bottom: 10px;">
+        <div style="float: left; text-align:center;height:33px;width:33px; margin: 10px; padding-top: 3px">
+              <img style="border-radius:50%;" alt='' src='{{ MEDIA_URL }}{{comment.user.avatar }}'  height='33px' width='33px' />
+        </div>
+          {# 留言内容 #}
+          <div class="body" style="float: left;margin: 10px; width:590px">
+
+              <p style="line-height: 20px;color:darkslategray;padding: 0px 0px 5px 5px">
+                  <span style="color:{{ comment.user.gender | sex }}; font-weight: bold  ">{{ comment.user.username }}</span>&nbsp&nbsp发表于 {{ comment.date_publish | date:'Y-m-d H:i' }}
+              </p>
+
+              <div class="{{ comment.user.gender | Chat_bubble }}">
+                    {{ comment.content | safe }}
+              </div>
+          </div>
+     </div>
+{% endfor %}
+</div>
+
+</div>
+
+{% endblock %}

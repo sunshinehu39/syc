@@ -1,0 +1,62 @@
+{# 评论区 #}
+<div style="margin: 30px 0px 60px 0px">
+        {# 新增评论 #}
+        {% if not request.user.is_authenticated %}
+            <div  style="text-align: center;"><button class="login"><a style="cursor: pointer; color: crimson;" href="{% url 'login' %}?next={{ request.get_full_path }}"> 评论 </a></button></div>
+        {% else %}
+            {#    评论表单#}
+            <div id="comment_form" hidden >
+                <form action="{% url 'comment_post' %}?next={{ request.get_full_path }}&category={{ category | urlencode }}" method="post">
+                    {% csrf_token %}
+                    <div id="div1" style="height:180px;max-height:500px;" ></div>
+                    <textarea id="content" hidden name="content" style="height:60px;width:650px;margin: 10px;resize: none;" >''</textarea>
+                    <input type="hidden" name="id" value="{{ id }}"/>
+                    <button id="submit" class="login" style="cursor: pointer; color: crimson;float: right">发布 </button>
+                </form>
+                <button id="cancelbnt" hidden  class="login" style="cursor: pointer; color: crimson;float: right"> 取消 </button>
+            </div>
+            <div style="text-align: center;"><button id="commentbnt"  class="login" style="cursor: pointer; color: crimson;"> 评论 </button></div>
+        {% endif %}
+
+        {# 显示评论 #}
+        <div>
+        {% for comment in comment_list %}
+            <div style="float: left;height:auto;margin-bottom: 10px;">
+                <div style="float: left; text-align:center;height:33px;width:33px; margin: 10px; padding-top: 3px">
+
+                {% ifequal comment.user.username '四叶草' %}
+                    <a href="{% url 'index' %}?category=四叶草">
+                {% else %}
+                    <a href="{% url 'Member_detail' %}?id={{ comment.user.id | M_id }}&category=会员">
+                {% endifequal %}
+                      <img alt='' src='{{ MEDIA_URL }}{{comment.user.avatar }}'  height='33px' width='33px' />
+                    </a>
+
+                </div>
+                  {# 留言内容 #}
+                  <div class="body" style="float: left;margin: 10px; width:590px">
+
+                      <p style="line-height: 20px;color:darkslategray;padding: 0px 0px 5px 5px">
+
+
+                        {% ifequal comment.user.username '四叶草' %}
+                            <a href="{% url 'index' %}?category=四叶草">
+                        {% else %}
+                            <a href="{% url 'Member_detail' %}?id={{ comment.user.id | M_id }}&category=会员">
+                        {% endifequal %}
+                                <span style="color:{{ comment.user.gender | sex }}; font-weight: bold  ">
+                                    {{ comment.user.username }}
+                                </span>
+                            </a>
+
+                          &nbsp&nbsp发表于 {{ comment.date_publish | date:'Y-m-d H:i' }}
+                      </p>
+
+                      <div class="{{ comment.user.gender | Chat_bubble }}">
+                            {{ comment.content | safe }}
+                      </div>
+                  </div>
+             </div>
+        {% endfor %}
+        </div>
+</div>

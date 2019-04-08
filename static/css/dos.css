@@ -1,0 +1,806 @@
+/*全局样式*/
+body {
+    font-family: 'Microsoft YaHei'
+}
+
+/*不同字体大小*/
+.f10{
+    font-size: 10px;
+}
+
+.f12{
+    font-size: 12px;
+}
+
+.f14{
+    font-size: 14px;
+}
+
+.f16{
+    font-size: 16px;
+}
+.f18{
+    font-size: 18px;
+}
+/*非选中区 灰色*/
+.notactive {
+    filter: grayscale(100%);
+}
+
+        /* 模糊*/
+        .blur {
+            -webkit-filter: blur(5px); /* Chrome, Opera */
+            -moz-filter: blur(5px);
+            -ms-filter: blur(5px);
+            filter: blur(5px);
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=5, MakeShadow=false); /* IE6~IE9 */
+        }
+
+/*随设备，自适应宽度，针对fixed的元素*/
+
+/*电脑上用50%*/
+    @media (max-width: 1600px){
+        .flexwidth{
+             max-width: 50%;
+        }
+    }
+
+/*手机上用100%*/
+    @media (max-width: 800px){
+        .flexwidth{
+             max-width: 100%;
+        }
+    }
+
+/*dos头像*/
+.dosavatar {
+	width: 60px;
+	padding: 5px;
+	border: 1px solid rgba(27, 46, 48, 0.12);
+	margin: 10px;
+    border-radius: 50%;
+}
+
+/*聊天气泡*/
+.Chat_bubble_female{
+    width:580px;
+    height:auto;
+    border:2px solid crimson;
+    position:relative;
+    background-color:#FFF;
+    line-height: 20px;
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+}
+.Chat_bubble_female:before,.Chat_bubble_female:after{
+    content:"";
+    display:block;
+    position:absolute;
+    right: 100%;
+    top: 5px;
+    border-right: 12px solid ;
+    border-bottom: 12px solid;
+    border-color: transparent  crimson  transparent transparent;
+    font-size:0;
+    line-height:0;
+}
+.Chat_bubble_female:after{
+    top: 7px;
+    right: 99.3%;
+    border-color: transparent  white transparent transparent;
+}
+.Chat_bubble_male{
+    width:580px;
+    height:auto;
+    border:2px solid #09F;
+    position:relative;
+    background-color:#FFF;
+    line-height: 20px;
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+}
+.Chat_bubble_male:before,.Chat_bubble_male:after{
+    content:"";
+    display:block;
+    position:absolute;
+    right: 100%;
+    top: 5px;
+    border-right: 12px solid ;
+    border-bottom: 12px solid;
+    border-color: transparent  #09F  transparent transparent;
+    font-size:0;
+    line-height:0;
+}
+.Chat_bubble_male:after{
+    top: 7px;
+    right: 99.3%;
+    border-color: transparent  white transparent transparent;
+}
+
+
+/*文字两段对齐*/
+.textJustify {
+    text-align: justify;
+    text-justify: inter-word;
+    text-justify: inter-ideograph;
+}
+
+/*登录对话框*/
+.doslogin {
+    position: fixed;
+    z-index: 1000000;
+    width: 250px;
+    height: 200px;
+    left: 50%;
+    top: 50%;
+    margin-left: -125px;
+    margin-top: -100px;
+    background-color: #455A64;
+    border-radius: 10px;
+    display: none;
+}
+
+/*遮罩-灰色半透明*/
+.mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #f2f2f2;
+    opacity: 0.9;
+    z-index: 99999;
+    border: none;
+    display: none;
+}
+
+/* 按钮 - 超链接 绿底白字 */
+.abnt {
+    color: white;
+    background: #4CAF50;
+    height: 30px;
+    font-size: 10px;
+    line-height: 30px;
+    border-radius: 10px;
+    padding: 4px 10px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/*加粗*/
+.b {
+    font-weight: bold;
+}
+
+/*左对齐*/
+.l {
+    text-align: left;
+}
+
+/*列表*/
+li {
+    line-height: 20px;
+}
+
+ul, ol {
+    margin-left: 10px;
+}
+
+/*section样式-黑色边框，黄色阴影*/
+.s1 {
+    border: 2px solid rgb(81, 81, 81);
+    border-radius: 7px;
+    padding: 0.1em 1em 0.4em;
+    text-align: justify;
+    display: inline-block;
+    letter-spacing: 1.5px;
+    box-shadow: rgb(253, 197, 1) 3px 3px 1px;
+    box-sizing: border-box;
+}
+
+/*jeui导航的item优化*/
+.item2 {
+    flex-grow: 1;
+    width: 1px;
+    margin-left: -5px;
+}
+
+/*代码*/
+pre code {
+    font: normal 10pt Consolas, Monaco, monospace;
+    margin: 5px;
+    border-right: ridge 2px;
+}
+
+/*表格*/
+th {
+    background: #f9f9f9;
+    text-align: center;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+}
+
+td a:link {
+    color: lightseagreen;
+    text-decoration: underline;
+}
+
+/*超链接*/
+a:link {
+    color: lightseagreen;
+    text-decoration: underline;
+}
+
+/*悬浮下拉菜单*/
+nav {
+    text-align: center;
+}
+
+nav ul {
+    border-radius: 3px;
+    background: linear-gradient(to bottom, #efefef, #bbbbbb);
+    display: inline-table;
+    position: relative;
+    box-shadow: 1px 1px 3px #666;
+}
+
+nav ul ul {
+    display: none;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+nav ul li a {
+    display: block;
+    padding: 5px 10px;
+    width: 90px;
+    color: #000;
+    text-decoration: none;
+    font-family: "微软雅黑";
+}
+
+nav ul li:hover > ul {
+    display: block;
+}
+
+nav ul li:hover {
+    background: linear-gradient(to bottom, #4f5964, #5f6975);
+}
+
+nav ul li:hover a {
+    color: #FFF;
+}
+
+nav ul ul {
+    background: #5f6975;
+    border-radius: 0;
+    position: absolute;
+    top: 100%;
+    padding: 0;
+    z-index: 1;
+}
+
+nav ul ul li {
+    float: none;
+    border-top: 1px solid #6b727c;
+    border-bottom: 1px solid #575f6a;
+}
+
+nav ul ul li a {
+    color: #FFF;
+}
+
+nav ul ul li a:hover {
+    background: #4b545f;
+}
+
+nav ul ul ul {
+    width: 100%;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+}
+
+/*内容*/
+.c {
+    color: dimgrey;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: pre-wrap;
+    padding: 5px;
+    border-left: 3px solid #4CAF50;
+    width: 100%;
+}
+
+/* 回顶部 */
+.gotop {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* 引用 -- 编辑器内 */
+.w-e-text blockquote {
+    color: black;
+}
+
+/*导航1--下横条*/
+.nav {
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    border-bottom: 4px solid gainsboro;
+    cursor: pointer;
+}
+
+.nav_active {
+    color: green;
+    border-bottom: 4px solid green;
+}
+
+/*对话框-删除*/
+.delbox {
+    background: #333333;
+    border-radius: 4px;
+    color: #fff;
+    opacity: 0.93;
+    width: 150px;
+    height: 110px;
+    padding: 10px;
+    position: fixed;
+    z-index: 999;
+    top: 40%;
+    left: 50%;
+    margin-left: -75px;
+    display: none
+}
+
+/* 按钮 - 绿底白字 */
+.bnt {
+    color: white;
+    background: #4CAF50;
+    height: 30px;
+    font-size: 10px;
+    line-height: 30px;
+    border-radius: 10px;
+    padding: 4px 10px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/*按钮 - 蓝底白字*/
+.boxbnt {
+    height: 25px;
+    width: 40px;
+    border-radius: 4px;
+    background: #4f8aff;
+    font-size: 12px;
+    line-height: 25px;
+    text-align: center;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/*横向布局,自动换行*/
+.x {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+/*纵向布局*/
+.y {
+    display: flex;
+    flex-flow: column;
+}
+
+/*水平居中*/
+.xcenter {
+    justify-content: center;
+}
+
+/*垂直居中*/
+.ycenter {
+    align-items: center;
+}
+
+/*水平垂直都居中*/
+.center {
+    justify-content: center;
+    align-items: center;
+}
+
+/*按钮类鼠标手型样式*/
+input[type="submit"]{
+    cursor: pointer;
+    -webkit-tap-highlight-color:transparent;    /* 去掉按钮点击阴影 */
+}
+
+input[type="button"]{
+        cursor: pointer;
+    -webkit-tap-highlight-color:transparent;    /* 去掉按钮点击阴影 */
+}
+
+/*两端对齐*/
+.lr {
+    justify-content: space-between;
+}
+
+/*平均分布*/
+.sq {
+    justify-content: space-around;
+}
+
+/*自动填满*/
+.grow {
+    flex-grow: 1;
+}
+
+/*上下外边距10*/
+.m10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/*上下外边距5*/
+.m5tb {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/*上下左右内边距5*/
+.p5 {
+    padding: 5px;
+}
+
+/*标题 - 带下边框*/
+.t {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 40px;
+    margin: 5px;
+    border-bottom: 3px solid gainsboro;
+    text-align: center;
+}
+
+/*标题 - 带下边框*/
+.t1 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 40px;
+    margin: 5px;
+    text-align: center;
+}
+
+/*日期*/
+.d {
+    color: dimgrey;
+    font-size: 8px;
+    line-height: 20px;
+    margin: 5px;
+    text-align: right;
+}
+
+/*盒子*/
+.box {
+    margin: 5px;
+}
+
+/*图片*/
+.img {
+    margin: 5px 0;
+    max-width: 100%;
+}
+
+
+/*jeui导航的item优化*/
+.item2 {
+    flex-grow: 1;
+    width: 1px;
+    display: flex;
+    justify-content: center;
+}
+
+/*列表*/
+.list {
+    line-height: 40px;
+    border-bottom: 1px solid gainsboro;
+    padding: 0 10px;
+}
+
+/*单行输入 input */
+input {
+    line-height: 20px;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px 0px;
+    font-family: 'microsoft yahei';
+}
+
+/*多行输入 textarea */
+textarea {
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    height: 60px;
+    line-height: 20px;
+    padding: 5px;
+    margin: 5px;
+    font-family: 'microsoft yahei';
+}
+
+/* 按钮button*/
+button {
+    color: white;
+    background: #4CAF50;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 3px;
+    border: none;
+    padding: 0px 10px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: 'microsoft yahei';
+    -webkit-tap-highlight-color:transparent;    /* 去掉按钮点击阴影 */
+}
+
+div{
+        -webkit-tap-highlight-color:transparent;    /* 去掉按钮点击阴影 */
+}
+
+/* 悬浮按钮-右下角-回到顶部 */
+.gotop {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/*颜色—绿色*/
+.green {
+    color: #4CAF50;
+}
+
+/*上下左右外边距5*/
+.m5 {
+    margin: 5px;
+}
+
+/*高度80*/
+.h80 {
+    height: 80px;
+}
+
+/*底部导航*/
+.tabbar {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    display: inline-flex;
+    border-top: 1px solid #bfbfbf;
+    background: white;
+}
+
+/*导航按钮*/
+.tabbaritem {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: #bfbfbf;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+/*超出显示省略号*/
+.textoverflow {
+    text-overflow: ellipsis;
+    width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/*当前导航*/
+.activetabbar {
+    color: #1296db;
+}
+
+/* 右下角绿底白字悬浮按钮 */
+.rbfloat {
+    position: fixed;
+    bottom: 15%;
+    right: 5%;
+    height: 50px;
+    width: 50px;
+}
+
+.fleft {
+    position: fixed;
+    bottom: 50%;
+    left: 0;
+}
+
+.fright {
+    position: fixed;
+    bottom: 50%;
+    right: 0;
+}
+
+/*小按钮*/
+.minibnt {
+    line-height: 20px;
+    height: 20px;
+    margin: 0px 10px 0px 10px;
+    font-size: 20px;
+    display: none;
+}
+
+/*分页*/
+.pagination {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    line-height: 38px;
+    padding: 0 15px;
+    margin-right: 4px;
+    text-align: center;
+    background-color: #fff;
+    user-select: none;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #d7dde4;
+    border-radius: 4px;
+    transition: all .2s ease-in-out;
+}
+
+.pagination a:hover {
+    color: #A161BF;
+    border: 1px solid #A161BF;
+}
+
+.pagination .current-page {
+    color: white;
+    background-color: #A161BF;
+}
+
+.pagination .current-page:hover {
+    color: white;
+    border: 1px solid #A161BF;
+}
+
+.pagination span {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 38px;
+    padding: 0 8px;
+    margin-right: 4px;
+}
+
+/*卡片*/
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display");
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro");
+
+.card {
+    width: 400px;
+    margin: 0px auto;
+    background-color: white;
+    box-shadow: 0px 5px 20px #555;
+}
+
+.card:hover .card-image img {
+    width: 110%;
+    filter: grayscale(0);
+    color: green;
+}
+
+.card-image {
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: grayscale(1);
+    transition-property: filter;
+    transition-duration: .3s;
+}
+
+.card-body {
+    text-align: center;
+    padding: 15px 20px;
+    box-sizing: border-box;
+}
+
+.card-date {
+    font-family: 'Microsoft YaHei', 'Source Sans Pro', sans-serif;
+    border-bottom: solid 1px gainsboro;
+}
+
+.card-title,
+.card-exceprt {
+    font-family: 'Microsoft YaHei', 'Playfair Display', serif;
+}
+
+.card-date,
+.card-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 30px;
+}
+
+.card-exceprt,
+#case-title {
+    color: #777;
+    text-align: left;
+    line-height: 25px;
+}
+
+#case-title {
+    position: absolute;
+    font: 18px 'Microsoft YaHei';
+    top: 10px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.bg-blue {
+    background-color: #1E88E5;
+}
+
+.bg-grey {
+    background-color: darkgrey;
+}
+
+.bg-purple {
+    background-color: purple;
+}
+
+.bg-red {
+    background-color: #e53935;
+}
+
+.bg-orange {
+    background-color: orange;
+}
+
+.white {
+    color: white;
+}

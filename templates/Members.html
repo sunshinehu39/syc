@@ -1,0 +1,82 @@
+{#全网主页/首页#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block left_content %}
+    <div class="topnews">
+    <h2>
+<a style="margin: 0px 10px;{% ifequal rank '-syc_No' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?rank=syc_No&category={{ category | urlencode }}">会员号</a>
+<a style="margin: 0px 10px;{% ifequal rank '-valid_time' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?rank=-valid_time&category={{ category | urlencode }}">有效期</a>
+<a style="margin: 0px 10px;{% ifequal rank '-study_num' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?rank=-study_num&category={{ category | urlencode }}">活跃度</a>
+<a style="margin: 0px 10px;{% ifequal rank '-practise_num' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?rank=-practise_num&category={{ category | urlencode }}">勤奋值</a>
+<a style="margin: 0px 10px;{% ifequal rank '-click_num' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?rank=-click_num&category={{ category | urlencode }}">浏览量</a>
+<a style="margin: 0px 10px;{% ifequal comment_rank '-comment_count' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?comment_rank=-comment_count&category={{ category | urlencode }}">评论数</a>
+
+<a style="margin: 0px 10px;{% ifequal sex '男' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?sex=男&category={{ category | urlencode }}">选帅哥</a>
+<a style="margin: 0px 10px;{% ifequal sex '女' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?sex=女&category={{ category | urlencode }}">找美女</a>
+<a style="margin: 0px 10px;{% ifequal remind '本月过期' %}color: #db5104{% endifequal %} " href="{% url 'Members' %}?remind=本月过期&category={{ category | urlencode }}">本月过期</a>
+    </h2>
+
+      {% for member in Members_list %}
+          <a href="{% url 'Member_detail' %}?id={{ member.id }}&category={{ category | urlencode}}">
+              <div style="display:table-cell; text-align:center; float: left; height:250px;width:145px; margin: 10px 12px 30px 10px; ">
+                  <img style="margin:auto;width: 145px;" src="{{ MEDIA_URL }}{{ member.VipCard }}" alt="">
+                  {% if remind == '本月过期' %}
+                        <p style="font-size: 12px">有效期 ：{{ member.valid_time }}</p>
+                  {% elif rank == 'syc_No' %}
+                        <p style="font-size: 12px">No.{{ member.syc_No }}</p>
+                  {% elif rank == '-valid_time' %}
+                        <p style="font-size: 12px">有效期 ：{{ member.valid_time }}</p>
+                  {% elif rank == '-study_num' %}
+                        <p style="font-size: 12px">参与活动{{ member.study_num }} 次</p>
+                   {% elif rank == '-practise_num' %}
+                        <p style="font-size: 12px">风火轮打卡{{ member.practise_num }}次</p>
+                   {% elif rank == '-click_num' %}
+                        <p style="font-size: 12px">已被浏览 {{ member.click_num }} 次</p>
+                   {% elif comment_rank == '-comment_count' %}
+                        <p style="font-size: 12px">已被点评 {{ member.comment_set.all.count }} 次</p>
+                   {% elif rank == '男' %}
+                        <p style="font-size: 12px">已被点评 {{ member.comment_count }} 次</p>
+                   {% elif rank == '女' %}
+                        <p style="font-size: 12px">已被点评 {{ member.comment_count }} 次</p>
+                   {% else %}
+                        <p style="font-size: 12px">No.{{ member.syc_No }}</p>
+                  {% endif %}
+
+              </div>
+          </a>
+      {% endfor %}
+
+{#分页#}
+{% if is_paginated %}
+    <div class="pagination">
+      {% if first %}
+        <a href="?page=1&category={{ category }}{{ path }}">1</a>
+      {% endif %}
+      {% if left %}
+        {% if left_has_more %}
+            <span>...</span>
+        {% endif %}
+        {% for i in left %}
+            <a href="?page={{ i }}&category={{ category }}{{ path }}">{{ i }}</a>
+        {% endfor %}
+      {% endif %}
+        <a class="current-page" href="?page={{ page_obj.number }}&category={{ category }}{{ path }}" >{{ page_obj.number }}</a>
+      {% if right %}
+        {% for i in right %}
+            <a href="?page={{ i }}&category={{ category }}{{ path }}">{{ i }}</a>
+        {% endfor %}
+        {% if right_has_more %}
+            <span>...</span>
+        {% endif %}
+      {% endif %}
+      {% if last %}
+        <a href="?page={{ paginator.num_pages }}&category={{ category }}{{ path }}">{{ paginator.num_pages }}</a>
+      {% endif %}
+    </div>
+{% endif %}
+
+
+    </div>
+
+{% endblock %}

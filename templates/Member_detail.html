@@ -1,0 +1,134 @@
+{#全网主页/首页#}
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load myfilter %}
+
+{% block left_content %}
+    <div class="topnews">
+
+        <div style="height:auto;">
+            <img style="float:left;border-bottom:5px solid white ;border-right:30px solid white ;height: 280px" src="{{ MEDIA_URL }}{{ member.VipCard }}" alt="">
+
+            <div style="font-size: 15px;line-height: 30px">
+                <h2 style=" font-size: 22px;  color: {{ member.gender | sex }}">
+                    <img style="display:inline;margin: -3px 2px;" height="30px" src="static/images/vip.png" alt="">
+                    No.{{ member.syc_No }}
+                    {{ member.name.username }}
+                    <img style="display:inline;margin: -3px 10px;" height="22px" src="static/images/{{ member.name.gender  }}.png" alt="">
+                    <span class="viewnum f_r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览（{{ member.click_num }}）</span>
+                </h2>
+            </div>
+
+            <div STYLE="font-size: 15px;line-height: 35px">
+                <p style=" " class="lm f_l"> &nbsp;&nbsp;&nbsp;&nbsp;
+                      <span style="color: green" >{{ member.role }}</span>&nbsp;&nbsp;
+                </p>
+
+                <br>
+
+                <p>资深会员 ：<span style="color: gold;font-weight: bold "> {{ member.join_time }} — {{ member.valid_time }}</span></p>
+                <p>读画写讲 ：共参加了 <span style="color: orangered;font-weight: bold">{{ member.study_num }}</span> 次四叶草线下学习沙龙！</p>
+                <p>疯狂成长 ：共完成了 <span style="color: orangered;font-weight: bold">{{ member.practise_num }}</span> 次四叶草线上风火轮打卡！</p>
+                {% ifequal member.url None %}
+                 <a href="{{ member.url }}">个人官网 ：总有一天会有的！</a>
+                {% else %}
+                <a href="{{ member.url }}">个人官网 ：<span style="color: darkturquoise ">{{ member.url | truncate_filter }}</span></a>
+                {% endifequal %}
+            </div>
+
+            <div style="margin-top:10px;font-size: 15px;line-height: 30px">
+                <h2 style="font-size: 20px">个人简介
+
+                    {% if member.video %}
+                    <a style="color: #db6d4c;font-size: 14px;" href="{{ member.video }}">&nbsp; &nbsp;>> 入会演讲视频 </a>
+                    {% endif %}
+
+                </h2>
+                <p>{{ member.profile }}</p>
+            </div>
+        </div>
+
+        <div style="line-height: 30px;font-size: 16px;margin-top: 15px ">
+            <h2 style="font-size: 20px">成长轨迹</h2>
+            <lo>
+            <li style="margin-top: 10px">{{ member.join_time }}加入四叶草学习社群！</li>
+{#            <li>{{ member.join_team_time }}加入四叶草运营团队！</li>#}
+            <li>2018年5月3日参加四叶草演讲沙龙《爱的五种语言》！</li>
+            </lo>
+        </div>
+
+
+    <div style="margin-top: 15px ">
+        <h2 style="font-size: 20px">大众点评
+
+               <span class="pingl f_r" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp评论（{{ member.comment_set.all.count }}）</span>
+
+        </h2>
+
+{# 评论区 #}
+<div style="margin: 30px 0px 60px 0px">
+        {# 新增评论 #}
+        {% if not request.user.is_authenticated %}
+            <div  style="text-align: center;"><button class="login"><a style="cursor: pointer; color: crimson;" href="{% url 'login' %}?next={{ request.get_full_path }}"> 评论 </a></button></div>
+        {% else %}
+            {#    评论表单#}
+            <div id="comment_form" hidden >
+                <form action="{% url 'comment_post' %}?next={{ request.get_full_path }}&category={{ category | urlencode }}" method="post">
+                    {% csrf_token %}
+                    <div id="div1" style="height:180px;max-height:500px;" ></div>
+                    <textarea id="content" hidden name="content" style="height:60px;width:650px;margin: 10px;resize: none;" >''</textarea>
+                    <input type="hidden" name="id" value="{{ id }}"/>
+                    <button id="submit" class="login" style="cursor: pointer; color: crimson;float: right">发布 </button>
+                </form>
+                <button id="cancelbnt" hidden  class="login" style="cursor: pointer; color: crimson;float: right"> 取消 </button>
+            </div>
+            <div style="text-align: center;"><button id="commentbnt"  class="login" style="cursor: pointer; color: crimson;"> 评论 </button></div>
+        {% endif %}
+
+        {# 显示评论 #}
+        <div>
+        {% for comment in comment_list %}
+            <div style="float: left;height:auto;margin-bottom: 10px;">
+                <div style="float: left; text-align:center;height:33px;width:33px; margin: 10px; padding-top: 3px">
+
+                {% ifequal comment.user.username '四叶草' %}
+                    <a href="{% url 'syc' %}?category=四叶草">
+                {% else %}
+                    <a href="{% url 'Member_detail' %}?id={{ comment.user.id | M_id }}&category=会员">
+                {% endifequal %}
+                      <img style="border-radius:50%;" alt='' src='{{ MEDIA_URL }}{{comment.user.avatar }}'  height='33px' width='33px' />
+                    </a>
+
+                </div>
+                  {# 留言内容 #}
+                  <div class="body" style="float: left;margin: 10px; width:590px">
+
+                      <p style="line-height: 20px;color:darkslategray;padding: 0px 0px 5px 5px">
+
+
+                        {% ifequal comment.user.username '四叶草' %}
+                            <a href="{% url 'syc' %}?category=四叶草">
+                        {% else %}
+                            <a href="{% url 'Member_detail' %}?id={{ comment.user.id | M_id }}&category=会员">
+                        {% endifequal %}
+                                <span style="color:{{ comment.user.gender | sex }}; font-weight: bold  ">
+                                    {{ comment.user.username }}
+                                </span>
+                            </a>
+
+                          &nbsp&nbsp发表于 {{ comment.date_publish | date:'Y-m-d H:i' }}
+                      </p>
+
+                      <div class="{{ comment.user.gender | Chat_bubble }}">
+                            {{ comment.content | safe }}
+                      </div>
+                  </div>
+             </div>
+        {% endfor %}
+        </div>
+</div>
+
+    </div>
+</div>
+
+{% endblock %}

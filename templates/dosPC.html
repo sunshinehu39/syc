@@ -1,0 +1,82 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}{% endblock %}</title>
+
+
+
+    <!-- jquery -->
+    <script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+
+    <!-- 浏览器图标 -->
+    <link rel="bookmark"  type="image/x-icon"  href="{% static 'images/dos.ico' %}"/>
+    <link rel="icon" href="{% static 'images/dos.ico' %}" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{% static 'images/dos.ico' %}">
+
+    <!-- JEUI的css和js -->
+    <link href="{% static 'jeui/css/jeui.css' %}" media="all" rel="stylesheet">
+    <link href="{% static 'jeui/css/skin/jebox.css' %}" media="all" rel="stylesheet">
+    <script src="{% static 'jeui/js/modules/jeui.js' %}" charset="utf-8"></script>
+    <script src="{% static 'jeui/js/modules/jeBox.js' %}" charset="utf-8"></script>
+
+    <!-- JEUI 日历 -->
+    <link type="text/css" rel="stylesheet" href="{% static 'jeDate/skin/jedate.css' %}">
+    <script type="text/javascript" src="{% static 'jeDate/src/jedate.js' %}"></script>
+
+    <!— DOS 的CSS和js 文件-->
+{#    <link href="{% static 'css/base.css' %}" rel="stylesheet">#}
+    <link href="{% static 'css/dos.css' %}" rel="stylesheet">
+
+</head>
+<body>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
+
+{% block myjs %}{% endblock %}
+
+
+
+<!-- JEUI 必备script 代码-->
+<script type="text/javascript">
+jeui.use(["jquery","jeBox","jeCheck","jeSelect"],function () {
+    $(".checkbox").jeCheck();
+    $(".radio").jeCheck({jename:"radio"});
+    $(".switch").jeCheck({jename:"switch"});
+    $(".myselect").jeSelect({
+        sosList: false
+    });
+    var index = parent.jeBox.frameIndex(window.name);
+    $('#btnIframe').click(function(){
+         //获取窗口索引
+        //parent.jeBox.msg('您将标记 [ ' +val + ' ] 成功传送给了父窗口');
+        parent.jeBox.close(index);
+    });
+ })
+</script>
+
+<!-- 复制到剪贴板 -->
+<script type="text/javascript" src="{% static 'js/clipboard.min.js' %}"></script>
+<script>
+var clipboard = new ClipboardJS('.copy');
+clipboard.on('success', function(e) {
+   jeBox.msg('复制成功！',
+       {icon: 2,
+        time:0.5,
+        boxStyle:{
+        background:"#333",  border:"1px solid #333",
+        },
+       }
+   );
+});
+clipboard.on('error', function(e) {
+    console.log(e);
+});
+</script>
